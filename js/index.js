@@ -1,0 +1,79 @@
+/**
+ * Métodos de recuperação de elementos HTML
+ */
+// const todoForm = document.getElementsByTagName('form') //para pegar 1 elemento especifico, acrescenta [i]
+// console.log(todoForm)
+
+const todoForm = document.getElementById('todo-form')
+const todos = []
+
+/**
+ * addEventListener serve para ouvir eventos de elementos HTML sempre que foram emitidos
+ * Funções anonimas - Funções passadas dentro de eventos. 
+*/
+todoForm.addEventListener('submit', function(evento) {
+    /**
+     * cancela o comportamento padrão de um formulario que seria o recarregamento da pagina tentando fazer seu envio
+     */
+    evento.preventDefault()
+    /**
+     * cancela a propagação do evento que foi emitido para os elementos pai, evitando que outros eventos sejam emitidos
+     */
+    evento.stopPropagation()
+
+    //querySelector pega o primeiro elemento por meio de um seletor css. Ex: #todo ou #input#todo
+   const todoInput = document.querySelector('#todo')
+   /**
+    * a propriedade value é uma propriedade que representa o atributo value ods elementos de formulario do HTML, para acessarmos o valor que está dentro deles
+    */
+   todos.push(todoInput.value)
+   todoInput.value = ''
+   renderizarTodos()
+})
+
+/**
+ * As funções não sofrem pela ordem, ou seja, você pode chamar uma função e declarar ela depois, pois a prioridade do JS na compilação é compilar as funções antes de executar.
+ */
+
+function renderizarTodos() {
+    const todosListSection = document.querySelector('#todos-list')
+    todosListSection.innerHTML = '' //esvazia a lista a cada renderizacao
+
+    for (let tarefa of todos) {
+        const divCard = document.createElement('div')
+        divCard.classList.add('card', 'bg-warning')
+
+        const divCardBody = document.createElement('div')
+        divCardBody.classList.add('card-body', 'd-flex', 'align-items-center')
+
+        const pTodoText = document.createElement('p')
+        pTodoText.classList.add('todo-text', 'flex-grow-1', 'text-truncate')
+        pTodoText.innerText = tarefa //innerText é a propriedade que informa qual o conteudo de texto que esta dentro de um elemento HTML; innerContent retorna o texto de dos elementos da tag e seus filhos
+
+        const btnDelete = document.createElement('button')
+        btnDelete.classList.add('btn', 'delete-todo')
+        //funções anonimas tbm podem ser declaradas dessa forma arrow function: () => {}
+        btnDelete.addEventListener('click', () => {
+            /**
+             * descobrir o indice do elemento dentro do array. Dentro dos arrays existe um metodo chamado indexOf() que retorna o indice do elemento. Se ele nao achar o valor dentro do array, ele retorna -1
+             */
+           const index = todos.indexOf(tarefa)
+           //console.log(index)
+           /**
+            * spliice serve para excluir um determinado valor do seu array a partir do seu indice, para que isso não ocorra, basta informar quantos valores serão excluidos
+            */
+           todos.splice(index, 1)
+           renderizarTodos()
+        })
+
+        const spanIcon = document.createElement('span')
+        spanIcon.classList.add('material-symbols-outlined')
+        spanIcon.innerText = 'delete'
+
+        btnDelete.appendChild(spanIcon) //elemento pai Delete referenciando o elemento filho span
+        divCardBody.append(pTodoText, btnDelete) //mesma funcao de appendChild so q append permite colocar varios por vez
+        divCard.appendChild(divCardBody)
+        todosListSection.appendChild(divCard)
+
+    }
+}
