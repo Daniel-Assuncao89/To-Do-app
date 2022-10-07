@@ -32,10 +32,48 @@ main {
     margin-top: 10px;
 }
 
+#importante {
+    color: red;
+    margin-right: 30px;
+
+}
+
+#medio {
+    color: yellow;
+    margin-right: 30px;
+}
+
+#facil {
+    color: green;
+    margin-right: 10px;
+}
 .todo-text {
     margin: 0;
 }
 
 .delete-todo {
     font-size: 0;
+}
+
+#containerCheckBox {
+    display: flex;
+    justify-content: center;
+}
+
+.iconeVermelho {
+    color: red;
+    background-color: red;
+    border-radius: 50px;
+}
+
+.iconeAmarelo {
+    color: yellow;
+    background-color: yellow;
+    border-radius: 50px;
+}
+
+.iconeVerde {
+    color: green;
+    background-color: green;
+    border-radius: 50px;
 }

@@ -7,11 +7,19 @@
 const todoForm = document.getElementById('todo-form')
 const todos = []
 
+let importante //query selector para pegar todos os inputs do tipo "radio".
+let medio
+let facil
+let selectedSize
 /**
  * addEventListener serve para ouvir eventos de elementos HTML sempre que foram emitidos
  * Funções anonimas - Funções passadas dentro de eventos. 
 */
 todoForm.addEventListener('submit', function(evento) {
+    importante = document.querySelector(".importante")
+    medio = document.querySelector(".medio")
+    facil = document.querySelector(".facil")
+
     /**
      * cancela o comportamento padrão de um formulario que seria o recarregamento da pagina tentando fazer seu envio
      */
@@ -37,6 +45,7 @@ todoForm.addEventListener('submit', function(evento) {
 
 function renderizarTodos() {
     const todosListSection = document.querySelector('#todos-list')
+    
     todosListSection.innerHTML = '' //esvazia a lista a cada renderizacao
 
     for (let tarefa of todos) {
@@ -49,11 +58,13 @@ function renderizarTodos() {
         const pTodoText = document.createElement('p')
         pTodoText.classList.add('todo-text', 'flex-grow-1', 'text-truncate')
         pTodoText.innerText = tarefa //innerText é a propriedade que informa qual o conteudo de texto que esta dentro de um elemento HTML; innerContent retorna o texto de dos elementos da tag e seus filhos
+        const marcador = document.createElement('span')
 
         const btnDelete = document.createElement('button')
         btnDelete.classList.add('btn', 'delete-todo')
         //funções anonimas tbm podem ser declaradas dessa forma arrow function: () => {}
         btnDelete.addEventListener('click', () => {
+            
             /**
              * descobrir o indice do elemento dentro do array. Dentro dos arrays existe um metodo chamado indexOf() que retorna o indice do elemento. Se ele nao achar o valor dentro do array, ele retorna -1
              */
@@ -70,10 +81,30 @@ function renderizarTodos() {
         spanIcon.classList.add('material-symbols-outlined')
         spanIcon.innerText = 'delete'
 
+
+        let icone
+        if(importante.checked) {
+            selectedSize = importante.value
+            icone = document.createElement('span')
+            icone.classList.add('material-symbols-outlined', 'iconeVermelho')
+            icone.innerText = 'circle'
+
+        } else if (medio.checked){
+            selectedSize = medio.value
+            icone = document.createElement('span')
+            icone.classList.add('material-symbols-outlined', 'iconeAmarelo')
+            icone.innerText = 'circle'
+        } else {
+            selectedSize = facil.value
+            icone = document.createElement('span')
+            icone.classList.add('material-symbols-outlined', 'iconeVerde')
+            icone.innerText = 'circle'
+        }
+
         btnDelete.appendChild(spanIcon) //elemento pai Delete referenciando o elemento filho span
-        divCardBody.append(pTodoText, btnDelete) //mesma funcao de appendChild so q append permite colocar varios por vez
+        divCardBody.append(pTodoText, icone, btnDelete) //mesma funcao de appendChild so q append permite colocar varios por vez
         divCard.appendChild(divCardBody)
         todosListSection.appendChild(divCard)
-
     }
+    
 }
