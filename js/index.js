@@ -10,7 +10,8 @@ const todos = []
 let importante //query selector para pegar todos os inputs do tipo "radio".
 let medio
 let facil
-let selectedSize
+let selectedSize = []
+let icone
 /**
  * addEventListener serve para ouvir eventos de elementos HTML sempre que foram emitidos
  * Funções anonimas - Funções passadas dentro de eventos. 
@@ -34,6 +35,28 @@ todoForm.addEventListener('submit', function(evento) {
    /**
     * a propriedade value é uma propriedade que representa o atributo value ods elementos de formulario do HTML, para acessarmos o valor que está dentro deles
     */
+    
+    if(importante.checked) {
+        
+        icone = document.createElement('span')
+        icone.classList.add('material-symbols-outlined', 'iconeVermelho')
+        icone.innerText = 'circle'
+        selectedSize.push(icone)
+
+    } else if (medio.checked){
+        
+        icone = document.createElement('span')
+        icone.classList.add('material-symbols-outlined', 'iconeAmarelo')
+        icone.innerText = 'circle'
+        selectedSize.push(icone)
+    } else {
+        
+        icone = document.createElement('span')
+        icone.classList.add('material-symbols-outlined', 'iconeVerde')
+        icone.innerText = 'circle'
+        selectedSize.push(icone)
+    }
+
    todos.push(todoInput.value)
    todoInput.value = ''
    renderizarTodos()
@@ -48,7 +71,7 @@ function renderizarTodos() {
     
     todosListSection.innerHTML = '' //esvazia a lista a cada renderizacao
 
-    for (let tarefa of todos) {
+    for (let i = 0; i < todos.length; i++) {
         const divCard = document.createElement('div')
         divCard.classList.add('card', 'bg-warning')
 
@@ -57,7 +80,7 @@ function renderizarTodos() {
 
         const pTodoText = document.createElement('p')
         pTodoText.classList.add('todo-text', 'flex-grow-1', 'text-truncate')
-        pTodoText.innerText = tarefa //innerText é a propriedade que informa qual o conteudo de texto que esta dentro de um elemento HTML; innerContent retorna o texto de dos elementos da tag e seus filhos
+        pTodoText.innerText = todos[i] //innerText é a propriedade que informa qual o conteudo de texto que esta dentro de um elemento HTML; innerContent retorna o texto de dos elementos da tag e seus filhos
         const marcador = document.createElement('span')
 
         const btnDelete = document.createElement('button')
@@ -68,7 +91,7 @@ function renderizarTodos() {
             /**
              * descobrir o indice do elemento dentro do array. Dentro dos arrays existe um metodo chamado indexOf() que retorna o indice do elemento. Se ele nao achar o valor dentro do array, ele retorna -1
              */
-           const index = todos.indexOf(tarefa)
+           const index = i
            //console.log(index)
            /**
             * spliice serve para excluir um determinado valor do seu array a partir do seu indice, para que isso não ocorra, basta informar quantos valores serão excluidos
@@ -82,29 +105,15 @@ function renderizarTodos() {
         spanIcon.innerText = 'delete'
 
 
-        let icone
-        if(importante.checked) {
-            selectedSize = importante.value
-            icone = document.createElement('span')
-            icone.classList.add('material-symbols-outlined', 'iconeVermelho')
-            icone.innerText = 'circle'
-
-        } else if (medio.checked){
-            selectedSize = medio.value
-            icone = document.createElement('span')
-            icone.classList.add('material-symbols-outlined', 'iconeAmarelo')
-            icone.innerText = 'circle'
-        } else {
-            selectedSize = facil.value
-            icone = document.createElement('span')
-            icone.classList.add('material-symbols-outlined', 'iconeVerde')
-            icone.innerText = 'circle'
-        }
-
         btnDelete.appendChild(spanIcon) //elemento pai Delete referenciando o elemento filho span
-        divCardBody.append(pTodoText, icone, btnDelete) //mesma funcao de appendChild so q append permite colocar varios por vez
+        divCardBody.append(pTodoText, selectedSize[i], btnDelete) //mesma funcao de appendChild so q append permite colocar varios por vez
         divCard.appendChild(divCardBody)
         todosListSection.appendChild(divCard)
+
+        
+    }
+    for (let index = 0; index < selectedSize.length; index++) {
+        selectedSize[i] = ''
     }
     
 }
