@@ -92,11 +92,12 @@ function renderizarTodos() {
              * descobrir o indice do elemento dentro do array. Dentro dos arrays existe um metodo chamado indexOf() que retorna o indice do elemento. Se ele nao achar o valor dentro do array, ele retorna -1
              */
            const index = i
-           //console.log(index)
+            console.log(index)
            /**
             * spliice serve para excluir um determinado valor do seu array a partir do seu indice, para que isso não ocorra, basta informar quantos valores serão excluidos
             */
            todos.splice(index, 1)
+           selectedSize.splice(index, 1)
            renderizarTodos()
         })
 
@@ -112,8 +113,5 @@ function renderizarTodos() {
 
         
     }
-    for (let index = 0; index < selectedSize.length; index++) {
-        selectedSize[i] = ''
-    }
-    
+    selectedSize.innerHTML = ''
 }
